@@ -1,3 +1,61 @@
-una applicazione che gira in locale sul mio pc, al quale daro' dei PDF che hanno una pagina con una immagine fullpage dal quel devi estrarre l'anno che sta  di fianco a una scritta "Steuererklärung" e poi devi estrarre il titolo "herr" oppure "frau", il nome e l'indirizzo.
-se ci sono "Herr & frau" prendi solo il nome del maschio . Ad eempio se trovi "Herr & Frau" su una riga e sulkal riga dopo trovi "Ciancio Akessandro & Guerrisi Clara", prendi solo "Ciancio Alessandro". sulla riga dopo c'e' l'indirizzo e sull'altra riga il cap la citta. Esempio: "8405 Winterhtur". Il testo puo' essre in tedesco, in italiano, o in inglese.
-Crea un file CSV con i dati estratti. Ad ogni pdf, incrementa questo file
+## PDF Tax Declaration Data Extraction
+
+App locale (Python) per estrarre da PDF con **pagina scansionata (immagine full-page)**:
+
+- **anno** vicino a “Steuererklärung” (o equivalenti: inglese/italiano)
+- **titolo**: `herr` oppure `frau`
+- **nome** (se trova `Herr & Frau` prende **solo il maschio**, cioè la parte a sinistra di `&`)
+- **indirizzo** + **CAP** + **città**
+
+I risultati vengono **aggiunti (append)** a un file CSV ad ogni esecuzione.
+
+### Requisiti
+
+- Python 3.10+
+- Tesseract OCR installato nel sistema (necessario per i PDF scansionati)
+
+Su Ubuntu/Debian:
+
+```bash
+sudo apt-get update && sudo apt-get install -y tesseract-ocr
+# opzionale (migliora l’OCR se presenti):
+sudo apt-get install -y tesseract-ocr-eng tesseract-ocr-deu tesseract-ocr-ita
+```
+
+### Installazione dipendenze Python
+
+```bash
+pip install -r requirements.txt
+```
+
+### Uso
+
+- Processare uno o più PDF:
+
+```bash
+python -m pdf_tax_extractor /percorso/file1.pdf /percorso/file2.pdf --csv estrazioni.csv
+```
+
+- Processare tutti i PDF in una cartella:
+
+```bash
+python -m pdf_tax_extractor /percorso/cartella_con_pdf --csv estrazioni.csv
+```
+
+- Cercare anche nelle sottocartelle:
+
+```bash
+python -m pdf_tax_extractor /percorso/cartella_con_pdf --recursive --csv estrazioni.csv
+```
+
+Per default, se `estrazioni.csv` esiste, i PDF già presenti (colonna `pdf_file`) vengono **saltati**. Per disabilitare:
+
+```bash
+python -m pdf_tax_extractor /percorso/cartella --no-skip-existing --csv estrazioni.csv
+```
+
+### Output CSV
+
+Colonne:
+
+- `pdf_file`, `year`, `title`, `name`, `address`, `zip`, `city`, `page_index`
