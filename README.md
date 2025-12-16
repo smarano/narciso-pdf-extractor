@@ -1,0 +1,3 @@
+una applicazione che gira in locale sul mio pc, al quale daro' dei PDF che hanno una pagina con una immagine fullpage dal quel devi estrarre l'anno che sta  di fianco a una scritta "Steuererklärung" e poi devi estrarre il titolo "herr" oppure "frau", il nome e l'indirizzo.
+se ci sono "Herr & frau" prendi solo il nome del maschio . Ad eempio se trovi "Herr & Frau" su una riga e sulkal riga dopo trovi "Ciancio Akessandro & Guerrisi Clara", prendi solo "Ciancio Alessandro". sulla riga dopo c'e' l'indirizzo e sull'altra riga il cap la citta. Esempio: "8405 Winterhtur". Il testo puo' essre in tedesco, in italiano, o in inglese.
+Crea un file CSV con i dati estratti. Ad ogni pdf, incrementa questo file
